@@ -1,0 +1,23 @@
+# Create a Github action to email the user when the deployment is complete
+name: Email Deployment Status
+on:
+  deployment_status:
+    types:
+      - success
+jobs:
+  email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Email Deployment Status
+        env:
+          SMTP_SERVER: smtp.gmail.com
+          SMTP_PORT: 587
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+          SUBJECT: "Deployment Status"
+          BODY: "The deployment was successful!"
+          FROM_EMAIL: "${{ secrets.EMAIL_FROM }}"
+          content-type: "text/html"
